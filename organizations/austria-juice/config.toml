@@ -1,0 +1,71 @@
+organization = "austria-juice"
+id = "1"
+
+[logger]
+    level = "debug"
+    format = "text"
+
+[trigger]
+	config = '''
+	specification = "@every 3s"
+	'''
+
+[actions]
+	[actions.imap_action]
+		config = '''
+			port = ":993"
+			domain = "tnf-mail.unchain.io"
+			username = "austria-juice-staging@tnf-mail.unchain.io"
+			password = "QF9*!e52aoFr"
+			fromFilter = "test@tnf-mail.unchain.io"
+			subjectFilter = "passphrase"
+			'''
+
+	[actions.fileparser_action]
+		filetype = "CSV"
+		header = false
+
+	[actions.templater_action]
+		template = '''
+{
+  "anfp": "{{.anfp}}",
+  "dfp": {{.dfp}},
+  "bnfp": "{{.bnfp}}",
+  "pds": {{.pds | date "2006-01-02"}},
+  "pde": {{.pde | date "2006-01-02"}},
+  "jds": {{.jds}},
+  "jde": {{.jde}},
+  "bbd": {{.bbd | date "2006-01-02"}},
+  "pc": "{{.pc}}",
+  "pl": "{{.pl}}",
+  "rmn": "{{.rmn}}",
+  "pon": "{{.pon}}",
+  "pop": "{{.pop}}",
+}
+'''
+		[actions.templater_action.variables]
+			ANFP = "$.col-3"
+			DFP = "n/a"
+			BNFP = "$.col-6"
+			PDS = 1970-01-01
+			PDE = "$.col-9"
+			JDS = "0"
+			JDE = "0"
+			BBD = 1970-01-01
+			PC = "$.col-7"
+			PL = "$.col-8"
+			RMN = "n/a"
+			PON = "$.col-0"
+			POP = "$.col-1"
+
+	[actions.http_action]
+		url = "http://localhost:80"
+		method = "POST"
+
+	[actions.smtp_action]
+		username = "test@localhost"
+		password = "password@localhost"
+		hostname = "localhost"
+		port = ":1025"
+		from = "test@localhost"
+		recipients = ["error@localhost"]
