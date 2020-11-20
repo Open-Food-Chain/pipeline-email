@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/jmoiron/jsonq"
 	"github.com/unchain/pipeline/pkg/actions/fileparser_action"
+	"github.com/unchain/pipeline/pkg/actions/http_action"
 	"github.com/unchain/pipeline/pkg/actions/imap_action"
 	"github.com/unchain/pipeline/pkg/actions/templater_action"
 	"github.com/unchain/pipeline/pkg/domain"
@@ -78,7 +79,6 @@ func (p *Pipeline) start(trigger domain.Trigger) {
 
 // handle email messages in loop
 func (p *Pipeline) handleMessages(messages map[uint32]interface{}) (uint32, error) {
-	fmt.Printf("GOT #%v MESSAGES\n", len(messages))
 	for seqNum, message := range messages {
 		// file parsing
 		fileparserOutput, err := fileparser_action.Invoke(p.log, map[string]interface{}{
@@ -102,7 +102,6 @@ func (p *Pipeline) handleMessages(messages map[uint32]interface{}) (uint32, erro
 			return seqNum, errors.Wrapf(err, "error in email with seqNum %v - record handling stopped at index prior to error index\n", seqNum)
 		}
 
-		fmt.Println("will mark messages as read")
 		// mark message as read
 		_, err = imap_action.Invoke(p.log, map[string]interface{}{
 			imap_action.ConfigInput: p.cfg.Actions.ImapAction.Config,
@@ -121,7 +120,6 @@ func (p *Pipeline) handleMessages(messages map[uint32]interface{}) (uint32, erro
 
 // handle product batch records in loop
 func (p *Pipeline) handleRecords(records []map[string]interface{}) error {
-	fmt.Printf("GOT #%v RECORDS\n", len(records))
 	for index, record := range records {
 		inputVariables := GetInputVariables(jsonq.NewQuery(record), p.cfg.Actions.TemplaterAction.Variables)
 		templaterOutput, err := templater_action.Invoke(p.log, map[string]interface{}{
@@ -131,21 +129,16 @@ func (p *Pipeline) handleRecords(records []map[string]interface{}) error {
 		if err != nil {
 			return errors.Wrapf(err, "could not transform data for record with index %v", index)
 		}
-		fmt.Println("HTTP INPUT ")
-		fmt.Println(fmt.Sprintf("%s", templaterOutput[templater_action.TemplateResult]))
 
 		// call import-api
-		// httpOutput, err := http_action.Invoke(p.log, map[string]interface{}{
-		// 	http_action.RequestBody: []byte(fmt.Sprintf("%s", templaterOutput[templater_action.TemplateResult])),
-		// 	http_action.Url:         p.cfg.Actions.HttpAction.Url,
-		// 	http_action.Method:      p.cfg.Actions.HttpAction.Method,
-		// })
-		// if err != nil {
-		// 	return errors.Wrapf(err, "could not call import-api for record with ID %v \n HTTP response: %v", index, httpOutput)
-		// }
-		// FIXME why is this not proceeding??
-		fmt.Println("done sending request")
+		httpOutput, err := http_action.Invoke(p.log, map[string]interface{}{
+			http_action.RequestBody: []byte(fmt.Sprintf("%s", templaterOutput[templater_action.TemplateResult])),
+			http_action.Url:         p.cfg.Actions.HttpAction.Url,
+			http_action.Method:      p.cfg.Actions.HttpAction.Method,
+		})
+		if err != nil {
+			return errors.Wrapf(err, "could not call import-api for record with ID %v \n HTTP response: %v", index, httpOutput)
+		}
 	}
-
 	return nil
 }

@@ -32,7 +32,7 @@ id = "1"
   "dfp": {{.dfp}},
   "bnfp": "{{.bnfp}}",
   "pds": {{.pds | date "2006-01-02"}},
-  "pde": {{.pde | date "2006-01-02"}},
+  "pde": {{toDate "20060102" .pde | date "2006-01-02"}},
   "jds": {{.jds}},
   "jde": {{.jde}},
   "bbd": {{.bbd | date "2006-01-02"}},

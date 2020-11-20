@@ -60,26 +60,17 @@ func TestAustriaJuiceEndToEndSuccess(t *testing.T) {
 	require.NoError(t, err)
 
 	// TEST ASSERTIONS
-	time.Sleep(5 * time.Second)
-
-	// check for no failed messages
-	errorCount := countErrorEmails(log, t)
-	require.Equal(t, float64(0), errorCount, "error alert email expected to be 0")
-
-	// check no emails with status unread remain
-	unreadCount := countUnreadEmails(log, t)
-	require.Equal(t, 0, len(unreadCount), "unread email count expected to be 0")
-
 	// check http call rec
 	resBody := <-requestChannel
-	log.Println("received response on localhost:80/")
+
+	time.Sleep(5 * time.Second)
 
 	expectedBody := `{
   "anfp": "11021034",
   "dfp": n/a,
   "bnfp": "B1253854",
   "pds": 1970-01-01,
-  "pde": 2020-11-19,
+  "pde": 2020-01-06,
   "jds": 0,
   "jde": 0,
   "bbd": 1970-01-01,
@@ -92,8 +83,74 @@ func TestAustriaJuiceEndToEndSuccess(t *testing.T) {
 `
 	require.Equal(t, expectedBody, string(resBody), "http request body received from pipeline on import api does not match expected body")
 
+	// check for no failed messages
+	errorCount := countErrorEmails(log, t)
+	require.Equal(t, float64(0), errorCount, "error alert email expected to be 0")
+
+	// check no emails with status unread remain
+	unreadCount := countUnreadEmails(log, t)
+	require.Equal(t, 0, len(unreadCount), "unread email count expected to be 0")
+
 	p.Stop()
 }
+
+func TestAustriaJuiceEndToEndFailover(t *testing.T) {
+	// TEST SETUP
+
+	// send to austria-juice-staging@tnf-mail.unchain.io
+	err := factory.SendAustriaJuiceMail(
+		"test@tnf-mail.unchain.io",
+		"%m9BkE&3EVdT",
+		"tnf-mail.unchain.io",
+		"test@tnf-mail.unchain.io",
+		465,
+		[]string{"austria-juice-staging@tnf-mail.unchain.io"},
+		"./bad_example.csv")
+	require.NoError(t, err)
+	log.Printf("send email")
+
+	requestChannel := make(chan []byte)
+	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+		resBody, err := ioutil.ReadAll(request.Body)
+		require.NoError(t, err, "request body could not be read")
+		err = request.Body.Close()
+		require.NoError(t, err, "request body could not be closed")
+		requestChannel <- resBody
+		render.JSON(writer, request, map[string]interface{}{
+			"key": "value",
+		})
+	})
+	go http.ListenAndServe(":80", nil)
+
+	log.Println("test setup complete")
+
+	// TEST EXECUTION
+
+	// load config & logger
+	cfg := loadConfig()
+	log, _ := xlogger.New(cfg.Logger)
+
+	// create and start pipeline
+	p := pipeline.New(cfg, log)
+
+	err = p.Start()
+	require.NoError(t, err)
+
+	// TEST ASSERTIONS
+	// check http call rec
+	time.Sleep(5 * time.Second)
+
+	// check for no failed messages
+	errorCount := countErrorEmails(log, t)
+	require.Equal(t, float64(1), errorCount, "error alert email expected to be 1")
+
+	// check no emails with status unread remain
+	failedCount := countFailedEmails(log, t)
+	require.Equal(t, 1, len(failedCount), "unread email count expected to be 0")
+
+	p.Stop()
+}
+
 
 func loadConfig() *pipeline.Config {
 	// load config
@@ -120,6 +177,28 @@ func countUnreadEmails(l logger.Logger, t *testing.T) []uint32 {
 		Domain:   "tnf-mail.unchain.io",
 	})
 	require.NoError(t, err)
+
+	criteria := &imap.SearchCriteria{
+		WithoutFlags: []string{imap.SeenFlag},
+	}
+
+	seqNums, err := c.Client.Search(criteria)
+	require.NoError(t, err)
+
+	return seqNums
+}
+
+func countFailedEmails(l logger.Logger, t *testing.T) []uint32 {
+	c, err := factory.NewImapClient(l, &factory.ImapConfig{
+		Port:     ":993",
+		Username: "austria-juice-staging@tnf-mail.unchain.io",
+		Password: "QF9*!e52aoFr",
+		Domain:   "tnf-mail.unchain.io",
+	})
+	require.NoError(t, err)
+
+	_, err = c.Client.Select("Failed", false)
+	require.NoError(t, err, "cannot select failed inbox")
 
 	criteria := &imap.SearchCriteria{
 		WithoutFlags: []string{imap.SeenFlag},
