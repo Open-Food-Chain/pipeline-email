@@ -21,3 +21,14 @@ Test assertions
 Test teardown
 5. The pipeline is stopped
 
+# Test scenario: fail over
+Test setup
+1. A new email with an invalid CSV attachment (`bad_example.csv`) is send to the IMAP inbox of the above mentioned email.
+2. A HTTP server is started on localhost:80
+Test execution
+3. The pipeline is triggered in order to fetch and process the email sent in step 1.
+Test assertions
+4. The IMAP failed mailbox is checked to make it contains a moved message
+5. The SMTP server is checked for containing one error messages
+Test teardown
+6. The pipeline is stopped

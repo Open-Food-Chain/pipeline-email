@@ -29,8 +29,9 @@ type ImapActionConfig struct {
 }
 
 type FileparserActionConfig struct {
-	Filetype string
-	Header   bool
+	Filetype  string
+	Header    bool
+	Delimiter rune
 }
 
 type TemplaterActionConfig struct {

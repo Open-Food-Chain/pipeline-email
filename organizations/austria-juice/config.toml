@@ -24,6 +24,7 @@ id = "1"
 	[actions.fileparser_action]
 		filetype = "CSV"
 		header = false
+		delimiter = 59 # unicode decimal for ';'
 
 	[actions.templater_action]
 		template = '''

@@ -140,7 +140,7 @@ func TestAustriaJuiceEndToEndFailover(t *testing.T) {
 	// check http call rec
 	time.Sleep(5 * time.Second)
 
-	// check for no failed messages
+	// check for one failed messages
 	errorCount := countErrorEmails(log, t)
 	require.Equal(t, float64(1), errorCount, "error alert email expected to be 1")
 
