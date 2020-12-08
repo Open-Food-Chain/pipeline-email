@@ -13,12 +13,20 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"testing"
 	"time"
 )
 
+func skipCI(t *testing.T) {
+	if os.Getenv("CI") != "" {
+		t.Skip("Skipping testing in CI environment")
+	}
+}
+
 func TestAustriaJuiceEndToEndSuccess(t *testing.T) {
 	// TEST SETUP
+	skipCI(t)
 
 	// send to austria-juice-staging@tnf-mail.unchain.io
 	err := factory.SendAustriaJuiceMail(
@@ -95,6 +103,8 @@ func TestAustriaJuiceEndToEndSuccess(t *testing.T) {
 }
 
 func TestAustriaJuiceEndToEndFailover(t *testing.T) {
+	skipCI(t)
+
 	// TEST SETUP
 
 	// send to austria-juice-staging@tnf-mail.unchain.io

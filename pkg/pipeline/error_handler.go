@@ -2,15 +2,12 @@ package pipeline
 
 import (
 	"fmt"
-	"github.com/prometheus/common/log"
 	"github.com/unchain/pipeline/pkg/actions/imap_action"
 	"github.com/unchain/pipeline/pkg/actions/smtp_action"
 	"github.com/unchain/pipeline/pkg/domain"
 )
 
 func (p *Pipeline) handleError(trigger domain.Trigger, tag string, err error, seqNum uint32) {
-	log.Error(err)
-
 	var messageString string
 	if seqNum != 0 {
 		messageString = fmt.Sprintf("Email account: %s \n Email with seqNum %v is moved to mailbox 'Failed', message processing resulted in error:\n %v", p.cfg.Organization, seqNum, err)

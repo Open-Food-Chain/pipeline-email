@@ -14,7 +14,7 @@ func Test_GetInputVariables_Success(t *testing.T) {
 	}
 	variables := map[string]interface{}{
 		"key0": "$.a",
-		"key1": "$.1",
+		"key1": "$.b",
 	}
 	expectedOutput := map[string]interface{}{
 		"key0": "value0",
