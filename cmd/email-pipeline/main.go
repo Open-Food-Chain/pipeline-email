@@ -41,4 +41,8 @@ func main() {
 	err = p.Start()
 	iferr.Exit(err)
 
+	for <- p.StopChannel {
+
+	}
+
 }

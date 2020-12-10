@@ -23,9 +23,6 @@ go-build:
 docker-build:
 	docker build --tag registry.unchain.io/${org}/${app-name}:${version} .
 
-docker-login:
-	docker login --username ${REGISTRY_USER} --password ${REGISTRY_PASSWORD} ${REGISTRY_ADDRESS}
-
 push:
 	docker push registry.unchain.io/${org}/${app-name}:${version}
 

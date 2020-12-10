@@ -30,49 +30,44 @@ func (p *Pipeline) Start() error {
 func (p *Pipeline) start(trigger domain.Trigger) {
 	// start infinite loop to process messages
 	for {
-		select {
-		case <-p.stopChannel:
-			return
-		default:
-			tag, _, err := trigger.NextMessage()
-			if err != nil {
-				p.handleError(trigger, tag, err, 0)
-			}
-			p.log.Debugf("Next message with tag %v", tag)
+		tag, _, err := trigger.NextMessage()
+		if err != nil {
+			p.handleError(trigger, tag, err, 0)
+		}
+		p.log.Debugf("Next message with tag %v", tag)
 
-			// check email
-			imapOutput, err := imap_action.Invoke(p.log, map[string]interface{}{
-				imap_action.ConfigInput: p.cfg.Actions.ImapAction.Config,
-				imap_action.Function:    "GetNewMessageAttachments",
-			})
-			if err != nil {
-				p.handleError(trigger, tag, err, 0)
-			}
-			// if no new messages, continue
-			if imapOutput == nil {
-				err = trigger.Respond(tag, nil, err)
-				if err != nil {
-					p.handleError(trigger, tag, err, 0)
-				}
-				continue
-			}
-			messages, ok := imapOutput["messages"].(map[uint32]interface{})
-			if !ok {
-				p.handleError(trigger, tag, errors.New("could not cast messages output from imap action"), 0)
-			}
-			p.log.Debugf("New messages: # %v", len(messages))
-
-			// handle email messages
-			seqNum, err := p.handleMessages(messages)
-			if err != nil {
-				p.handleError(trigger, tag, err, seqNum)
-			}
-
-			// call respond to finish processing
+		// check email
+		imapOutput, err := imap_action.Invoke(p.log, map[string]interface{}{
+			imap_action.ConfigInput: p.cfg.Actions.ImapAction.Config,
+			imap_action.Function:    "GetNewMessageAttachments",
+		})
+		if err != nil {
+			p.handleError(trigger, tag, err, 0)
+		}
+		// if no new messages, continue
+		if imapOutput == nil {
 			err = trigger.Respond(tag, nil, err)
 			if err != nil {
 				p.handleError(trigger, tag, err, 0)
 			}
+			continue
+		}
+		messages, ok := imapOutput["messages"].(map[uint32]interface{})
+		if !ok {
+			p.handleError(trigger, tag, errors.New("could not cast messages output from imap action"), 0)
+		}
+		p.log.Debugf("New messages: # %v", len(messages))
+
+		// handle email messages
+		seqNum, err := p.handleMessages(messages)
+		if err != nil {
+			p.handleError(trigger, tag, err, seqNum)
+		}
+
+		// call respond to finish processing
+		err = trigger.Respond(tag, nil, err)
+		if err != nil {
+			p.handleError(trigger, tag, err, 0)
 		}
 	}
 }
