@@ -22,7 +22,7 @@ func (p *Pipeline) Start() error {
 
 	p.log.Debugf("Initialized pipeline trigger")
 
-	go p.start(trigger)
+	p.start(trigger)
 
 	return nil
 }
