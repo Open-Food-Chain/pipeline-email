@@ -3,13 +3,13 @@ module github.com/The-New-Fork/email-pipeline
 go 1.15
 
 require (
+	github.com/coreos/etcd v3.3.15+incompatible // indirect
 	github.com/emersion/go-imap v1.0.6
 	github.com/go-chi/render v1.0.1
-	github.com/coreos/etcd v3.3.15+incompatible // indirect
 	github.com/jmoiron/jsonq v0.0.0-20150511023944-e874b168d07e
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/stretchr/testify v1.6.1
-	github.com/unchain/pipeline v0.0.0-20201207235952-afa156021d9f
+	github.com/unchain/pipeline v0.0.0-20201221173528-db91c9a2b7f8
 	github.com/unchainio/interfaces v0.2.1
 	github.com/unchainio/pkg v0.22.1
 	golang.org/x/tools v0.0.0-20190524140312-2c0ae7006135
