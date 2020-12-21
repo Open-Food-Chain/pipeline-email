@@ -242,6 +242,8 @@ github.com/unchain/pipeline v0.0.0-20201207235952-afa156021d9f h1:UhQ6y0v+3SzdPz
 github.com/unchain/pipeline v0.0.0-20201207235952-afa156021d9f/go.mod h1:RyR9E559RBgvLjZF5XC/kAR0L90xkLg5eWNlR+1yBK8=
 github.com/unchain/pipeline v0.0.0-20201221173528-db91c9a2b7f8 h1:8qBlDolGteKBfhsnOhAxbOeFlNGcOR3xlFXuESQWuOw=
 github.com/unchain/pipeline v0.0.0-20201221173528-db91c9a2b7f8/go.mod h1:aALLwgfeTIrYZA5TQXL/ecEB9xRCZNVp20vPyudWFB4=
+github.com/unchain/pipeline v0.0.0-20201221180813-38ecf41bce98 h1:OiCDpw124kdBNbWdiqXOj3UvBRqcQE1VUnyzYJhr0wM=
+github.com/unchain/pipeline v0.0.0-20201221180813-38ecf41bce98/go.mod h1:aALLwgfeTIrYZA5TQXL/ecEB9xRCZNVp20vPyudWFB4=
 github.com/unchainio/interfaces v0.2.1 h1:7O0Io3/tAew6xQTCqUzJG6wZqjSNe3AADZCTWmDSVYs=
 github.com/unchainio/interfaces v0.2.1/go.mod h1:xQSNG/tv36Dh55zg8Xaw/I2kVvcn0JGrcRoupybBDG8=
 github.com/unchainio/pkg v0.22.1 h1:Cj8bZp/C4dEMlvbH240Kb+CAdwdF03yQ7W7+lshIxJU=

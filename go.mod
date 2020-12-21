@@ -9,7 +9,7 @@ require (
 	github.com/jmoiron/jsonq v0.0.0-20150511023944-e874b168d07e
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/stretchr/testify v1.6.1
-	github.com/unchain/pipeline v0.0.0-20201221173528-db91c9a2b7f8
+	github.com/unchain/pipeline v0.0.0-20201221180813-38ecf41bce98
 	github.com/unchainio/interfaces v0.2.1
 	github.com/unchainio/pkg v0.22.1
 	golang.org/x/tools v0.0.0-20190524140312-2c0ae7006135
