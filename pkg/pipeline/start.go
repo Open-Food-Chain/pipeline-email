@@ -129,6 +129,7 @@ func (p *Pipeline) handleRecords(records []map[string]interface{}) error {
 		httpOutput, err := http_action.Invoke(p.log, map[string]interface{}{
 			http_action.RequestBody: []byte(fmt.Sprintf("%s", templaterOutput[templater_action.TemplateResult])),
 			http_action.Url:         p.cfg.Actions.HttpAction.Url,
+			http_action.ContentType: "application/json",
 			http_action.Method:      p.cfg.Actions.HttpAction.Method,
 		})
 		if err != nil {
