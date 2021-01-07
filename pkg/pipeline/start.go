@@ -56,6 +56,10 @@ func (p *Pipeline) start(trigger domain.Trigger) {
 		if !ok {
 			p.handleError(trigger, tag, errors.New("could not cast messages output from imap action"), 0)
 		}
+
+		if len(messages) < 1 {
+			continue
+		}
 		p.log.Debugf("New messages: # %v", len(messages))
 
 		// handle email messages
