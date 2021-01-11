@@ -246,6 +246,10 @@ github.com/unchain/pipeline v0.0.0-20201221180813-38ecf41bce98 h1:OiCDpw124kdBNb
 github.com/unchain/pipeline v0.0.0-20201221180813-38ecf41bce98/go.mod h1:aALLwgfeTIrYZA5TQXL/ecEB9xRCZNVp20vPyudWFB4=
 github.com/unchain/pipeline v0.0.0-20210107230534-3c57970b9543 h1:1UrrTUucSW35m5Sehyrdk/6T054tj6GyQJizgV5Nyp4=
 github.com/unchain/pipeline v0.0.0-20210107230534-3c57970b9543/go.mod h1:aALLwgfeTIrYZA5TQXL/ecEB9xRCZNVp20vPyudWFB4=
+github.com/unchain/pipeline v0.0.0-20210111130239-0fe940375ff5 h1:Ans9XW4F2vgEe2UhCq0b6oKAAwml5fNkwt1ZCChx4kE=
+github.com/unchain/pipeline v0.0.0-20210111130239-0fe940375ff5/go.mod h1:aALLwgfeTIrYZA5TQXL/ecEB9xRCZNVp20vPyudWFB4=
+github.com/unchain/pipeline v0.0.0-20210111150105-791be2360b50 h1:g7yCDflHlgZ7K+0YgL6zlSQ3GF6mo1QtuPK7fyngzRM=
+github.com/unchain/pipeline v0.0.0-20210111150105-791be2360b50/go.mod h1:aALLwgfeTIrYZA5TQXL/ecEB9xRCZNVp20vPyudWFB4=
 github.com/unchainio/interfaces v0.2.1 h1:7O0Io3/tAew6xQTCqUzJG6wZqjSNe3AADZCTWmDSVYs=
 github.com/unchainio/interfaces v0.2.1/go.mod h1:xQSNG/tv36Dh55zg8Xaw/I2kVvcn0JGrcRoupybBDG8=
 github.com/unchainio/pkg v0.22.1 h1:Cj8bZp/C4dEMlvbH240Kb+CAdwdF03yQ7W7+lshIxJU=
@@ -301,6 +305,7 @@ golang.org/x/sys v0.0.0-20190412213103-97732733099d/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/sys v0.0.0-20190422165155-953cdadca894/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20190801041406-cbf593c0f2f3 h1:4y9KwBHBgBNwDbtu44R5o1fdOCQUEXhbk/P4A9WmJq0=
 golang.org/x/sys v0.0.0-20190801041406-cbf593c0f2f3/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20191008105621-543471e840be h1:QAcqgptGM8IQBC9K/RC4o+O9YmqEm0diQn9QmZw/0mU=
 golang.org/x/sys v0.0.0-20191008105621-543471e840be/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/text v0.3.0 h1:g61tztE5qeGQ89tm6NTjjM9VPIm088od1l6aSorWRWg=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=

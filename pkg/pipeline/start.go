@@ -3,13 +3,13 @@ package pipeline
 import (
 	"fmt"
 	"github.com/jmoiron/jsonq"
+	"github.com/pkg/errors"
 	"github.com/unchain/pipeline/pkg/actions/fileparser_action"
 	"github.com/unchain/pipeline/pkg/actions/http_action"
 	"github.com/unchain/pipeline/pkg/actions/imap_action"
 	"github.com/unchain/pipeline/pkg/actions/templater_action"
 	"github.com/unchain/pipeline/pkg/domain"
 	"github.com/unchain/pipeline/pkg/triggers/cron_trigger"
-	"github.com/unchainio/pkg/errors"
 )
 
 func (p *Pipeline) Start() error {
@@ -87,7 +87,7 @@ func (p *Pipeline) handleMessages(messages map[uint32]interface{}) (uint32, erro
 			fileparser_action.Delimiter: ';',
 		})
 		if err != nil {
-			return seqNum, errors.Wrapf(err, "could not parse file in email with seqNum %v\n", seqNum)
+			return seqNum, errors.Wrap(err, fmt.Sprintf( "could not parse file in email with seqNum %v\n", seqNum))
 		}
 		p.log.Debugf("Parsed file, output: %v", fileparserOutput)
 		// data transformation
@@ -98,7 +98,7 @@ func (p *Pipeline) handleMessages(messages map[uint32]interface{}) (uint32, erro
 
 		err = p.handleRecords(records)
 		if err != nil {
-			return seqNum, errors.Wrapf(err, "error in email with seqNum %v - record handling stopped at index prior to error index\n", seqNum)
+			return seqNum, errors.Wrap(err, fmt.Sprintf("error in email with seqNum %v - record handling stopped at index prior to error index\n", seqNum))
 		}
 
 		// mark message as read
@@ -110,7 +110,7 @@ func (p *Pipeline) handleMessages(messages map[uint32]interface{}) (uint32, erro
 			},
 		})
 		if err != nil {
-			return seqNum, errors.Wrapf(err, "error in email with seqNum %v\n", seqNum)
+			return seqNum, errors.Wrap(err, fmt.Sprintf("error in email with seqNum %v\n", seqNum))
 		}
 	}
 
@@ -126,7 +126,7 @@ func (p *Pipeline) handleRecords(records []map[string]interface{}) error {
 			templater_action.InputVariables: inputVariables,
 		})
 		if err != nil {
-			return errors.Wrapf(err, "could not transform data for record with index %v", index)
+			return errors.Wrap(err, fmt.Sprintf("could not transform data for record with index %v", index))
 		}
 
 		// call import-api
@@ -136,8 +136,14 @@ func (p *Pipeline) handleRecords(records []map[string]interface{}) error {
 			http_action.ContentType: "application/json",
 			http_action.Method:      p.cfg.Actions.HttpAction.Method,
 		})
+		p.log.Debugf("invoked http action with result: %v \n and error: %v \n", httpOutput, err)
 		if err != nil {
-			return errors.Wrapf(err, "could not call import-api for record with ID %v \n HTTP response: %v", index, httpOutput)
+			return err
+		}
+
+		statusCode := httpOutput[http_action.ResponseStatusCode].(int)
+		if statusCode != 200 {
+			return errors.New(fmt.Sprintf("failed to call import-api for record with ID %v \n HTTP response: %v", index, httpOutput))
 		}
 	}
 	return nil

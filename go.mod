@@ -8,8 +8,9 @@ require (
 	github.com/go-chi/render v1.0.1
 	github.com/jmoiron/jsonq v0.0.0-20150511023944-e874b168d07e
 	github.com/opentracing/opentracing-go v1.1.0
+	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.6.1
-	github.com/unchain/pipeline v0.0.0-20210107230534-3c57970b9543
+	github.com/unchain/pipeline v0.0.0-20210111150105-791be2360b50
 	github.com/unchainio/interfaces v0.2.1
 	github.com/unchainio/pkg v0.22.1
 	golang.org/x/tools v0.0.0-20190524140312-2c0ae7006135

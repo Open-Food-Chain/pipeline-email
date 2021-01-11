@@ -7,7 +7,7 @@ id = "1"
 
 [trigger]
 	config = '''
-	specification = "@every 3s"
+	specification = "@every 10s"
 	'''
 
 [actions]
@@ -17,8 +17,8 @@ id = "1"
 			domain = "tnf-mail.unchain.io"
 			username = "austria-juice-staging@tnf-mail.unchain.io"
 			password = "QF9*!e52aoFr"
-			fromFilter = "test@tnf-mail.unchain.io"
-			subjectFilter = "passphrase"
+			fromFilter = ""
+			subjectFilter = ""
 			'''
 
 	[actions.fileparser_action]
@@ -30,18 +30,18 @@ id = "1"
 		template = '''
 {
   "anfp": "{{.anfp}}",
-  "dfp": {{.dfp}},
+  "dfp": "{{.dfp}}",
   "bnfp": "{{.bnfp}}",
-  "pds": {{.pds | date "2006-01-02"}},
-  "pde": {{toDate "20060102" .pde | date "2006-01-02"}},
-  "jds": {{.jds}},
-  "jde": {{.jde}},
-  "bbd": {{.bbd | date "2006-01-02"}},
+  "pds": "{{.pds | date "2006-01-02"}}",
+  "pde": "{{toDate "20060102" .pde | date "2006-01-02"}}",
+  "jds": "{{.jds}}",
+  "jde": "{{.jde}}",
+  "bbd": "{{.bbd | date "2006-01-02"}}",
   "pc": "{{.pc}}",
   "pl": "{{.pl}}",
   "rmn": "{{.rmn}}",
   "pon": "{{.pon}}",
-  "pop": "{{.pop}}",
+  "pop": "{{.pop}}"
 }
 '''
 		[actions.templater_action.variables]
@@ -60,7 +60,7 @@ id = "1"
 			POP = "$.col-1"
 
 	[actions.http_action]
-		url = "http://localhost:80"
+		url = "http://localhost:8000/raw/refresco/"
 		method = "POST"
 
 	[actions.smtp_action]
