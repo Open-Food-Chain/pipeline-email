@@ -2,7 +2,7 @@ package pipeline
 
 import (
 	"github.com/jmoiron/jsonq"
-	"github.com/unchain/pipeline/pkg/xos"
+	"github.com/The-New-Fork/pipeline/pkg/xos"
 	"github.com/unchainio/pkg/errors"
 	"strings"
 )

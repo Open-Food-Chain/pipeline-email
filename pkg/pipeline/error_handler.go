@@ -2,9 +2,9 @@ package pipeline
 
 import (
 	"fmt"
-	"github.com/unchain/pipeline/pkg/actions/imap_action"
-	"github.com/unchain/pipeline/pkg/actions/smtp_action"
-	"github.com/unchain/pipeline/pkg/domain"
+	"github.com/The-New-Fork/pipeline/pkg/actions/imap_action"
+	"github.com/The-New-Fork/pipeline/pkg/actions/smtp_action"
+	"github.com/The-New-Fork/pipeline/pkg/domain"
 )
 
 func (p *Pipeline) handleError(trigger domain.Trigger, tag string, err error, seqNum uint32) {
