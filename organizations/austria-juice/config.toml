@@ -7,18 +7,18 @@ id = "1"
 
 [trigger]
 	config = '''
-	specification = "@every 10s"
+	specification = "@every 5s"
 	'''
 
 [actions]
 	[actions.imap_action]
 		config = '''
 			port = ":993"
-			domain = "tnf-mail.unchain.io"
-			username = "austria-juice-staging@tnf-mail.unchain.io"
-			password = "QF9*!e52aoFr"
-			fromFilter = ""
-			subjectFilter = ""
+			domain = "imap.gmail.com"
+			username = "ajpipelinetest@gmail.com"
+			password = "pleasechangeme"
+			fromFilter = "ajpipelinetest@gmail.com"
+			subjectFilter = "passphrase"
 			'''
 
 	[actions.fileparser_action]
@@ -64,9 +64,9 @@ id = "1"
 		method = "POST"
 
 	[actions.smtp_action]
-		username = "test@localhost"
-		password = "password@localhost"
-		hostname = "localhost"
-		port = ":1025"
-		from = "test@localhost"
-		recipients = ["error@localhost"]
+		username = "ajpipelinetest@gmail.com"
+		password = "pleasechangeme"
+		hostname = "smtp.gmail.com"
+		port = ":465"
+		from = "ajpipelinetest@gmail.com"
+		recipients = ["ajpipelinetest@gmail.com"]

@@ -3,7 +3,7 @@ package pipeline
 import (
 	"fmt"
 	"github.com/The-New-Fork/pipeline/pkg/actions/imap_action"
-	"github.com/The-New-Fork/pipeline/pkg/actions/smtp_action"
+	//"github.com/The-New-Fork/pipeline/pkg/actions/smtp_action"
 	"github.com/The-New-Fork/pipeline/pkg/domain"
 )
 
@@ -27,7 +27,7 @@ func (p *Pipeline) handleError(trigger domain.Trigger, tag string, err error, se
 	}
 
 	// send alert email
-	_, err = smtp_action.Invoke(p.log, map[string]interface{}{
+	/*_, err = smtp_action.Invoke(p.log, map[string]interface{}{
 		"username":   p.cfg.Actions.SmtpAction.Username,
 		"password":   p.cfg.Actions.SmtpAction.Password,
 		"hostname":   p.cfg.Actions.SmtpAction.Hostname,
@@ -35,8 +35,8 @@ func (p *Pipeline) handleError(trigger domain.Trigger, tag string, err error, se
 		"from":       p.cfg.Actions.SmtpAction.From,
 		"recipients": p.cfg.Actions.SmtpAction.Recipients,
 		"message":    []byte(messageString),
-	})
+	})*/
 	if err != nil {
-		p.log.Errorf("Could not handle error, msg: %v", err)
+		p.log.Errorf("Could not handle error, msg: %v", messageString)
 	}
 }
